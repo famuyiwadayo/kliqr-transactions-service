@@ -1,9 +1,9 @@
 import { createTransactionDto } from "../interfaces/dtos/transaction.dto";
-import UserRepository from "../repositories/transaction.repo";
+import TransactionRepository from "../repositories/transaction.repo";
 import { getCsvData } from "../utils/getCsvData";
 
-export default class UserService {
-  repo = new UserRepository();
+export default class TransactionService {
+  repo = new TransactionRepository();
 
   async createTransaction(input: createTransactionDto) {
     return await this.repo.createTransaction(input);
