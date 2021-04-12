@@ -33,20 +33,21 @@ export const query = (
 /**
  * Create User Table
  */
-const createUserTable = async () => {
+const createTransactionTable = async () => {
   try {
     const queryText = `CREATE TABLE IF NOT EXISTS
-      users(
-        id serial PRIMARY KEY,
-        first_name VARCHAR(128),
-        last_name VARCHAR(128),
-        avatar VARCHAR,
-        created_at TIMESTAMP,
-        updated_at TIMESTAMP
+      transactions(
+        id SERIAL PRIMARY KEY,
+        user_id INT,
+        amount BIGINT,
+        type VARCHAR(128),
+        category VARCHAR,
+        icon_url VARCHAR,
+        date_time TIMESTAMP
       )`;
 
     await query(queryText);
-    console.log("Created the user table");
+    console.log("Created the transactions table");
     pool.end();
   } catch (error) {
     console.log(error);
@@ -57,12 +58,12 @@ const createUserTable = async () => {
 /**
  * Drop User Table
  */
-const dropUserTable = async () => {
+const dropTransactionTable = async () => {
   try {
     const queryText = "DROP TABLE IF EXISTS users";
     await query(queryText);
     pool.end();
-    console.log("Dropped the user table");
+    console.log("Dropped the transactions table");
   } catch (error) {
     console.log(error);
     pool.end();
@@ -75,9 +76,9 @@ const dropUserTable = async () => {
 // });
 
 module.exports = {
-  createUserTable,
-  dropUserTable,
   query,
+  createTable: createTransactionTable,
+  dropTable: dropTransactionTable,
 };
 
 require("make-runnable");

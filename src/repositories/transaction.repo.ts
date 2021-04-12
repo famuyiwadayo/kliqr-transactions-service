@@ -7,7 +7,7 @@ import {
 } from "../db/queries/user.query";
 import { query } from "../db/db";
 
-export default class UserRepository {
+export default class TransactionRepository {
   async createTransaction(input: createTransactionDto): Promise<TransactionRo> {
     try {
       const values = [

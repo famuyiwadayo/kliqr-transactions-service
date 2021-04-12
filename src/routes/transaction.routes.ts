@@ -1,19 +1,18 @@
 import { Router } from "express";
-import { UserController } from "../controllers";
+import { TransactionController } from "../controllers";
 import { upload } from "../middlewares";
 
 const router = Router();
-const controller = new UserController();
+const controller = new TransactionController();
 
-router.post("/", controller.createUser);
-router.post("/batch", controller.batchCreateUser);
+router.post("/", controller.createTransaction);
 router.post(
-  "/batch/csv",
+  "/batch",
   upload.single("file"),
-  controller.batchCreateUsersFromCsv
+  controller.batchCreateTransactionsFromCsv
 );
 
-router.get("/", controller.getUsers);
-router.get("/:id", controller.getUserById);
+router.get("/", controller.getTransactions);
+router.get("/:id", controller.getTransactionById);
 
 export default router;
