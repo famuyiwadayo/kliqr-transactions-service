@@ -14,5 +14,6 @@ router.post(
 
 router.get("/", controller.getTransactions);
 router.get("/:id", controller.getTransactionById);
+router.get("/users/:id", controller.getTransactionsByUserId);
 
 export default router;
