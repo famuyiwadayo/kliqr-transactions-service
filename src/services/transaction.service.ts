@@ -25,4 +25,8 @@ export default class TransactionService {
   async getTransactionById(id: string) {
     return await this.repo.getTransactionById(id);
   }
+
+  async getTransactionsByUserId(id: string) {
+    return await this.repo.getTransactionsByUserId(id);
+  }
 }
