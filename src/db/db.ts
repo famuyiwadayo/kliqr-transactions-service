@@ -37,9 +37,9 @@ const createTransactionTable = async () => {
   try {
     const queryText = `CREATE TABLE IF NOT EXISTS
       transactions(
-        id SERIAL PRIMARY KEY,
+        id serial PRIMARY KEY,
         user_id INT,
-        amount BIGINT,
+        amount numeric,
         type VARCHAR(128),
         category VARCHAR,
         icon_url VARCHAR,
@@ -60,7 +60,7 @@ const createTransactionTable = async () => {
  */
 const dropTransactionTable = async () => {
   try {
-    const queryText = "DROP TABLE IF EXISTS users";
+    const queryText = "DROP TABLE IF EXISTS transactions";
     await query(queryText);
     pool.end();
     console.log("Dropped the transactions table");
