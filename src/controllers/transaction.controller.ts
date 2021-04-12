@@ -16,7 +16,7 @@ export default class TransactionController {
   async getTransactionById(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await service.getTransactionById(req.params.id);
-      sendResponse(res, 200, result);
+      sendResponse(res, 200, result ?? {});
     } catch (error) {
       sendError(error, next);
     }

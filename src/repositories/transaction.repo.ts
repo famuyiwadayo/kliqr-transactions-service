@@ -1,29 +1,31 @@
 import { createTransactionDto } from "../interfaces/dtos/transaction.dto";
 import { TransactionRo } from "../interfaces/ros/transaction.ro";
 import {
-  createUserSql,
-  getUserByIdSql,
-  getUsersSql,
-} from "../db/queries/user.query";
+  createTransactionSql,
+  getTransactionsSql,
+  getTransactionByIdSql,
+  getTransactionsByUserIdSql
+} from "../db/queries/transaction.query";
 import { query } from "../db/db";
 
 export default class TransactionRepository {
   async createTransaction(input: createTransactionDto): Promise<TransactionRo> {
     try {
       const values = [
-        input.first_name,
-        input.last_name,
-        input.avatar,
-        input.created_at,
-        input.updated_at,
+        input.user_id,
+        input.amount,
+        input.type,
+        input.category,
+        input.icon_url,
+        input.date_time,
       ];
       if (input.id) values.unshift(input.id);
-      const result = await query(createUserSql(!!!input.id), values);
+      const result = await query(createTransactionSql(!!!input.id), values);
       return result.rows[0];
     } catch (error) {
       console.log(error.routine);
       if (error.routine === "_bt_check_unique")
-        throw new Error("User already exist");
+        throw new Error("Transaction already exist");
       throw new Error(error);
     }
   }
@@ -36,17 +38,15 @@ export default class TransactionRepository {
   }
 
   async getTransactions(): Promise<TransactionRo[]> {
-    const result = await query(getUsersSql);
-    return result.rows;
+    return (await query(getTransactionsSql)).rows;
   }
 
   async getTransactionById(id: string): Promise<TransactionRo> {
-    const result = await query(getUserByIdSql, [id]);
-    return result.rows[0];
+    return (await query(getTransactionByIdSql, [id])).rows[0];
   }
 
-  async getTransactionsByUserId(userId: string): Promise<TransactionRo> {
-    return {} as any;
+  async getTransactionsByUserId(userId: string): Promise<TransactionRo[]> {
+    return (await query(getTransactionsByUserIdSql, [userId])).rows
   }
 
 }
