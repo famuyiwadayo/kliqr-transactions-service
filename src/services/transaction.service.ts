@@ -1,4 +1,5 @@
 import { createTransactionDto } from "../interfaces/dtos/transaction.dto";
+import { UserTotalSpentAndIncomeRo } from "../interfaces/ros/transaction.ro";
 import TransactionRepository from "../repositories/transaction.repo";
 import { createError, getCsvData } from "../utils";
 
@@ -36,5 +37,13 @@ export default class TransactionService {
     const result = await this.repo.getTotalUserTxByUserId(userId);
     if(!result) return 0;
     return result;
+  }
+
+  async getTotalUserSpentAndIncome(userId: string): Promise<UserTotalSpentAndIncomeRo> {
+    const result = await this.repo.getTotalSpentAndIncomeByUserId(userId);
+    const arrValuesToObj = result.reduce(
+      (acc, val) => Object.assign(acc, {[val.type]: val.sum}), 
+    {}) as {credit: string, debit: string}
+    return {spent: +arrValuesToObj.debit ?? 0, income: +arrValuesToObj.credit ?? 0};
   }
 }

@@ -39,6 +39,15 @@ export default class TransactionController {
       sendError(error, next);
     }
   }
+  
+  async getTotalUserSpentAndInomeByUserId(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await service.getTotalUserSpentAndIncome(req.params.id);
+      sendResponse(res, 200, result);
+    } catch (error) {
+      sendError(error, next);
+    }
+  }
 
   async createTransaction(req: Request, res: Response, next: NextFunction) {
     try {

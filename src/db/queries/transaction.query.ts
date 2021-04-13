@@ -16,3 +16,5 @@ export const getTransactionByIdSql = `SELECT * FROM transactions WHERE id = $1`;
 export const getTransactionsByUserIdSql = `SELECT * FROM transactions WHERE user_id = $1`;
 
 export const getTotalUserTransactionByUserIdSql = `SELECT COUNT(*) FROM transactions WHERE user_id = $1`;
+
+export const getTotalUserSpentAndIncomeValueByUserIdSql = `SELECT type, SUM(amount) FROM transactions WHERE user_id = $1 GROUP BY type`;
