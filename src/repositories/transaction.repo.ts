@@ -1,11 +1,12 @@
 import { createTransactionDto } from "../interfaces/dtos/transaction.dto";
-import { TransactionRo } from "../interfaces/ros/transaction.ro";
+import { TransactionRo, UserTotalSpentAndIncomeRo } from "../interfaces/ros/transaction.ro";
 import {
   createTransactionSql,
   getTransactionsSql,
   getTransactionByIdSql,
   getTransactionsByUserIdSql,
-  getTotalUserTransactionByUserIdSql
+  getTotalUserTransactionByUserIdSql,
+  getTotalUserSpentAndIncomeValueByUserIdSql
 } from "../db/queries/transaction.query";
 import { query } from "../db/db";
 
@@ -52,6 +53,10 @@ export default class TransactionRepository {
 
   async getTotalUserTxByUserId(userId: string): Promise<number> {
     return (await query(getTotalUserTransactionByUserIdSql, [userId])).rows[0].count;
+  }
+
+  async getTotalSpentAndIncomeByUserId(userId: string): Promise<{type: string; sum: string}[]> {
+    return (await query(getTotalUserSpentAndIncomeValueByUserIdSql, [userId])).rows;
   }
 
 }

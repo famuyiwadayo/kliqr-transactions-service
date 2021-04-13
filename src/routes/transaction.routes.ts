@@ -16,5 +16,6 @@ router.get("/", controller.getTransactions);
 router.get("/:id", controller.getTransactionById);
 router.get("/users/:id", controller.getTransactionsByUserId);
 router.get("/users/:id/count", controller.getTotalUserTxByUserId);
+router.get("/users/:id/spent-and-income", controller.getTotalUserSpentAndInomeByUserId);
 
 export default router;

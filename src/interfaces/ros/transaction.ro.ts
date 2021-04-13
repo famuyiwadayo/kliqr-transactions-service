@@ -7,3 +7,8 @@ export interface TransactionRo {
   icon_url: string;
   date_time: Date | number | string;
 }
+
+export interface UserTotalSpentAndIncomeRo {
+  spent: number; 
+  income: number;
+}
