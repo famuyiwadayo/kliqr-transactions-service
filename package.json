@@ -5,10 +5,10 @@
   "main": "index.ts",
   "author": "FAMUYIWA DAYO (github.com/famuyiwadayo)",
   "license": "MIT",
-  "homepage": "https://github.com/famuyiwadayo/kliqr-identity-service#readme",
+  "homepage": "https://github.com/famuyiwadayo/kliqr-transactions-service#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/famuyiwadayo/kliqr-identity-service.git"
+    "url": "git+https://github.com/famuyiwadayo/kliqr-transactions-service.git"
   },
   "scripts": {
     "db": "node dist/db/db.js",
@@ -16,7 +16,7 @@
     "preserve": "npm run build",
     "serve": "yarn db createTable && cross-env NODE_ENV=development concurrently \"tsc --watch\" \"nodemon -q dist/index.js\"",
     "prestart": "npm run build",
-    "start": "yarn db createUserTable && cross-env NODE_ENV=production node dist/index.js",
+    "start": "yarn db createTable && cross-env NODE_ENV=production node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

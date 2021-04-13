@@ -8,8 +8,8 @@ import {
   handleError,
   logRequests,
 } from "./middlewares";
+import { config } from "./config/config";
 
-const PORT = process.env.PORT || 3000;
 const app: Express = express();
 
 app.use(helmet());
@@ -30,4 +30,4 @@ app.get("/", (_, res) =>
 app.use(catchRequest);
 app.use(handleError);
 
-app.listen(PORT, () => console.log(`Running on ${PORT} ⚡`));
+app.listen(config.PORT, () => console.log(`🚀 Transaction microservice running on localhost:${config.PORT} ⚡`));

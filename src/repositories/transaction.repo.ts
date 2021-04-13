@@ -4,7 +4,8 @@ import {
   createTransactionSql,
   getTransactionsSql,
   getTransactionByIdSql,
-  getTransactionsByUserIdSql
+  getTransactionsByUserIdSql,
+  getTotalUserTransactionByUserIdSql
 } from "../db/queries/transaction.query";
 import { query } from "../db/db";
 
@@ -47,6 +48,10 @@ export default class TransactionRepository {
 
   async getTransactionsByUserId(userId: string): Promise<TransactionRo[]> {
     return (await query(getTransactionsByUserIdSql, [userId])).rows
+  }
+
+  async getTotalUserTxByUserId(userId: string): Promise<number> {
+    return (await query(getTotalUserTransactionByUserIdSql, [userId])).rows[0].count;
   }
 
 }

@@ -15,5 +15,6 @@ router.post(
 router.get("/", controller.getTransactions);
 router.get("/:id", controller.getTransactionById);
 router.get("/users/:id", controller.getTransactionsByUserId);
+router.get("/users/:id/count", controller.getTotalUserTxByUserId);
 
 export default router;
