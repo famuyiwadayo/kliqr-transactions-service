@@ -14,3 +14,5 @@ export const getTransactionsSql = `SELECT * FROM transactions`;
 export const getTransactionByIdSql = `SELECT * FROM transactions WHERE id = $1`;
 
 export const getTransactionsByUserIdSql = `SELECT * FROM transactions WHERE user_id = $1`;
+
+export const getTotalUserTransactionByUserIdSql = `SELECT COUNT(*) FROM transactions WHERE user_id = $1`;

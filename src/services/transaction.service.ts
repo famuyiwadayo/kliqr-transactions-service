@@ -1,6 +1,6 @@
 import { createTransactionDto } from "../interfaces/dtos/transaction.dto";
 import TransactionRepository from "../repositories/transaction.repo";
-import { getCsvData } from "../utils/getCsvData";
+import { createError, getCsvData } from "../utils";
 
 export default class TransactionService {
   repo = new TransactionRepository();
@@ -23,10 +23,18 @@ export default class TransactionService {
   }
 
   async getTransactionById(id: string) {
-    return await this.repo.getTransactionById(id);
+    const result = await this.repo.getTransactionById(id);
+    if(!result) throw createError('Transaction not found', 404);
+    return result;
   }
 
   async getTransactionsByUserId(id: string) {
     return await this.repo.getTransactionsByUserId(id);
+  }
+
+  async getTotalUserTxByUserId(userId: string): Promise<number> {
+    const result = await this.repo.getTotalUserTxByUserId(userId);
+    if(!result) return 0;
+    return result;
   }
 }
