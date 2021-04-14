@@ -1,5 +1,5 @@
 import { createTransactionDto } from "../interfaces/dtos/transaction.dto";
-import { UserTotalSpentAndIncomeRo } from "../interfaces/ros/transaction.ro";
+import { UserSpentIncomeAndTxCountRo, UserTotalSpentAndIncomeRo } from "../interfaces/ros/transaction.ro";
 import TransactionRepository from "../repositories/transaction.repo";
 import { createError, getCsvData } from "../utils";
 
@@ -45,5 +45,11 @@ export default class TransactionService {
       (acc, val) => Object.assign(acc, {[val.type]: val.sum}), 
     {}) as {credit: string, debit: string}
     return {spent: +arrValuesToObj.debit ?? 0, income: +arrValuesToObj.credit ?? 0};
+  }
+
+  async getUserSpentIncomeAndTxCount(userId: string): Promise<UserSpentIncomeAndTxCountRo> {
+    const toRunInParallel: any = [this.getTotalUserSpentAndIncome(userId), this.getTotalUserTxByUserId(userId)];
+    const result = await Promise.all(toRunInParallel);
+    return {...result[0] as UserTotalSpentAndIncomeRo, count: +(result[1] as string)}
   }
 }
