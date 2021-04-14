@@ -14,7 +14,7 @@ COPY --chown=node:node . ./
 
 USER node 
 
-EXPOSE 3219
+EXPOSE 3220
 
 CMD ["yarn", "run", "start"]
 
