@@ -8,7 +8,16 @@ export interface TransactionRo {
   date_time: Date | number | string;
 }
 
+export interface UserTxCountRo {
+  count: number;
+}
 export interface UserTotalSpentAndIncomeRo {
   spent: number; 
   income: number;
+}
+
+export interface UserSpentIncomeAndTxCountRo {
+  spent: number; 
+  income: number;
+  count: number;
 }
