@@ -2,6 +2,7 @@ import { createTransactionDto } from "../interfaces/dtos/transaction.dto";
 import { UserSpentIncomeAndTxCountRo, UserTotalSpentAndIncomeRo } from "../interfaces/ros/transaction.ro";
 import TransactionRepository from "../repositories/transaction.repo";
 import { createError, getCsvData } from "../utils";
+import * as _ from 'lodash';
 
 export default class TransactionService {
   repo = new TransactionRepository();
@@ -52,4 +53,32 @@ export default class TransactionService {
     const result = await Promise.all(toRunInParallel);
     return {...result[0] as UserTotalSpentAndIncomeRo, count: +(result[1] as string)}
   }
+
+  async getSimilarUsersByUserId(userId: string): Promise<any> {
+    const toRunInParallel: any = [this.repo.getUserTxWithTheirCategories(), this.repo.getUserTxWithCategories(userId)]
+    const result = await Promise.all(toRunInParallel);
+    // const result = (await this.repo.getTransactions())
+    // .map(tx => ({user_id: tx.user_id, category: tx.category}));
+    // const groupByUserId = _.groupBy(result, r => r.user_id);
+    // const keys = Object.keys(groupByUserId);
+    // keys.forEach(key => {
+    //   const userAr = _.uniq(groupByUserId[userId].map(v => v.category))
+    //   const ar =  _.uniq(groupByUserId[key].map(v => v.category))
+    //   const intersection = _.intersection(userAr, ar)
+    //   if(key !== userId) console.log(key, intersection.length >= 3)
+    // })
+    const ids: number[] = []
+
+    for(const r of (result[0] as {categories: string; user_id: number}[])) {
+      const categories = getUniqueFromString(r.categories);
+      const intersection = _.intersection(categories, getUniqueFromString((result[1] as any).categories));
+      // console.log(r.user_id,intersection.length >= 3)
+      if(r.user_id !== +userId && intersection.length >= 3) ids.push(r.user_id)
+    }
+    return ids
+  }
 }
+
+const getUniqueFromString = (data: string) => _.uniq(data.split(','));
+
+

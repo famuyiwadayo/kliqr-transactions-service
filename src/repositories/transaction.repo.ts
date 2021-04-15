@@ -6,7 +6,9 @@ import {
   getTransactionByIdSql,
   getTransactionsByUserIdSql,
   getTotalUserTransactionByUserIdSql,
-  getTotalUserSpentAndIncomeValueByUserIdSql
+  getTotalUserSpentAndIncomeValueByUserIdSql,
+  getUserTxWithTheirCategoriesSql,
+  getUserTxWithCategoryByUserIdSql
 } from "../db/queries/transaction.query";
 import { query } from "../db/db";
 
@@ -57,6 +59,16 @@ export default class TransactionRepository {
 
   async getTotalSpentAndIncomeByUserId(userId: string): Promise<{type: string; sum: string}[]> {
     return (await query(getTotalUserSpentAndIncomeValueByUserIdSql, [userId])).rows;
+  }
+
+  async getUserTxWithTheirCategories(): Promise<any> {
+    const result = (await query(getUserTxWithTheirCategoriesSql)).rows;
+    return result;
+  }
+
+  async getUserTxWithCategories(userId: string): Promise<any> {
+    const result = (await query(getUserTxWithCategoryByUserIdSql, [userId])).rows[0];
+    return result;
   }
 
 }
