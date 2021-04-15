@@ -18,3 +18,18 @@ export const getTransactionsByUserIdSql = `SELECT * FROM transactions WHERE user
 export const getTotalUserTransactionByUserIdSql = `SELECT COUNT(*) FROM transactions WHERE user_id = $1`;
 
 export const getTotalUserSpentAndIncomeValueByUserIdSql = `SELECT type, SUM(amount) FROM transactions WHERE user_id = $1 GROUP BY type`;
+
+
+export const getUserTxWithTheirCategoriesSql = `
+SELECT user_id, string_agg(a.category, ',') categories from 
+(SELECT DISTINCT user_id, category, date_time from transactions WHERE date_time >= date_trunc('month', now()) - interval '5 month' and
+      date_time < date_trunc('month', now())) a 
+GROUP by user_id;
+`;
+
+export const getUserTxWithCategoryByUserIdSql = `
+SELECT user_id, string_agg(a.category, ',') categories from 
+(SELECT DISTINCT user_id, category, date_time from transactions WHERE date_time >= date_trunc('month', now()) - interval '5 month' and
+      date_time < date_trunc('month', now())) a where user_id = $1
+GROUP by user_id;
+`;
