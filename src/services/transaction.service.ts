@@ -77,6 +77,10 @@ export default class TransactionService {
     }
     return ids
   }
+
+  async getUserTopFiveCategories(userId: string) {
+    return await this.repo.getTopFiveCategoriesByUserId(userId);
+  }
 }
 
 const getUniqueFromString = (data: string) => _.uniq(data.split(','));

@@ -67,6 +67,15 @@ export default class TransactionController {
     }
   }
 
+  async getUserTopFiveCategories(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await service.getUserTopFiveCategories(req.params.id);
+      sendResponse(res, 200, result);
+    } catch (error) {
+      sendError(error, next);
+    }
+  }
+
   async createTransaction(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await service.createTransaction(req.body);
