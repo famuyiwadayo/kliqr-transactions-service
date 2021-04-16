@@ -21,3 +21,9 @@ export interface UserSpentIncomeAndTxCountRo {
   income: number;
   count: number;
 }
+
+export interface UserTopFiveCategories {
+  category: string; 
+  icon_url: string; 
+  count: number
+}

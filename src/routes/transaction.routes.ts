@@ -19,5 +19,7 @@ router.get("/users/:id/count", controller.getTotalUserTxByUserId);
 router.get("/users/:id/spent-and-income", controller.getTotalUserSpentAndInomeByUserId);
 router.get("/users/:id/spent-income-and-txCount", controller.getUserSpentAndInomeAndTxCount);
 router.get("/users/:id/similar-users", controller.getSimilarUsers);
+router.get("/users/:id/spent-income-and-txCount", controller.getUserSpentAndInomeAndTxCount);
+router.get("/users/:id/top-five-categories", controller.getUserTopFiveCategories);
 
 export default router;
