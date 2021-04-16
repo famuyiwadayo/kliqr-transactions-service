@@ -19,6 +19,10 @@ export const getTotalUserTransactionByUserIdSql = `SELECT COUNT(*) FROM transact
 
 export const getTotalUserSpentAndIncomeValueByUserIdSql = `SELECT type, SUM(amount) FROM transactions WHERE user_id = $1 GROUP BY type`;
 
+// USER TOTAL SPENT, INCOME AND TRANSACTION COUNT IN THE PAST 7 MONTH
+// export const getTotalUserSpentAndIncomeValueByUserIdSql = `SELECT type, SUM(amount) FROM transactions WHERE user_id = $1 AND 
+// date_time >= date_trunc('month', now()) - interval '7 month' and
+// date_time < date_trunc('month', now()) GROUP BY type`;
 
 export const getUserTxWithTheirCategoriesSql = `
 SELECT user_id, string_agg(a.category, ',') categories from 
