@@ -39,16 +39,19 @@ GROUP by user_id;
 `;
 
 export const getTopFiveCategoryFromEachMonthByUserIdSql = `
-SELECT DISTINCT a.category, a.icon_url, COUNT(category) as count 
-FROM (SELECT category, icon_url,
-            DATE_TRUNC('month',date_time) AS category_month,
-            COUNT(*) AS count
-      FROM transactions WHERE user_id = $1 
-      AND date_time >= date_trunc('month', now()) - interval '12 month' and
-          date_time < date_trunc('month', now())
-      GROUP BY category, icon_url, DATE_TRUNC('month', date_time)
-     ) a 
+SELECT category, icon_url, count 
+FROM (
+        SELECT DISTINCT a.category, a.icon_url, COUNT(category) as count 
+        FROM (SELECT category, icon_url, DATE_TRUNC('month',date_time)
+        AS category_month, COUNT(*) AS count
+        FROM transactions 
+        WHERE user_id = $1 
+        AND date_time >= date_trunc('month', now()) - interval '12 month' 
+        AND date_time < date_trunc('month', now())
+GROUP BY category, icon_url, DATE_TRUNC('month', date_time)) a 
 GROUP BY a.category, a.icon_url
 ORDER BY count DESC
-LIMIT 5
+LIMIT 5) as a where count >= 7
 `;
+
+export const getTrends = ``;
