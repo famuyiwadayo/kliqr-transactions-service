@@ -77,13 +77,13 @@ export default class TransactionRepository {
     return (await query(getTopFiveCategoryFromEachMonthByUserIdSql, [userId])).rows;
   }
 
-  async getSimilarUsers(userId: string, trends: string[]): Promise<number[]> {
-    const result = (await query(getSimilarUsersSql, [userId, trends])).rows;
-    const ids = result.reduce((acc: number[], val) => {
-      acc.push(val.user_id);
-      return acc;
-    }, [])
-    return ids
+  async getSimilarUsers(userId: string): Promise<any[]> {
+    const result = (await query(getSimilarUsersSql, [userId])).rows;
+    // const ids = result.reduce((acc: number[], val) => {
+    //   acc.push(val.user_id);
+    //   return acc;
+    // }, [])
+    return result
   }
 
 }

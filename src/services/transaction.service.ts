@@ -54,19 +54,9 @@ export default class TransactionService {
     return {...result[0] as UserTotalSpentAndIncomeRo, count: +(result[1] as string)}
   }
 
-  async getSimilarUsersByUserId_OLD(userId: string): Promise<any> {
+  async getSimilarUsersByUserId_OLD(userId: string, trends?: string[]): Promise<any> {
     const toRunInParallel: any = [this.repo.getUserTxWithTheirCategories(), this.repo.getUserTxWithCategories(userId)]
     const result = await Promise.all(toRunInParallel);
-    // const result = (await this.repo.getTransactions())
-    // .map(tx => ({user_id: tx.user_id, category: tx.category}));
-    // const groupByUserId = _.groupBy(result, r => r.user_id);
-    // const keys = Object.keys(groupByUserId);
-    // keys.forEach(key => {
-    //   const userAr = _.uniq(groupByUserId[userId].map(v => v.category))
-    //   const ar =  _.uniq(groupByUserId[key].map(v => v.category))
-    //   const intersection = _.intersection(userAr, ar)
-    //   if(key !== userId) console.log(key, intersection.length >= 3)
-    // })
     const ids: number[] = []
 
     for(const r of (result[0] as {categories: string; user_id: number}[])) {
@@ -78,8 +68,15 @@ export default class TransactionService {
     return ids
   }
 
-  async getSimilarUsersByUserId(userId: string, trends: string[]) {
-    return await this.repo.getSimilarUsers(userId, trends);
+  async getSimilarUsersByUserId(userId: string, trends: string[]): Promise<number[]> {
+    const users = await this.repo.getSimilarUsers(userId);
+    const MAX_TREND_SIMILARITIES = 2; // SHOULD BE 3 THO BUH NO USER HAS UP TO 3 EXPENSE TRENDS
+    const similar: any[] = [];
+    for (const user of users) {
+        const intersection = _.intersection(trends, user.categories)
+        if(intersection.length >= MAX_TREND_SIMILARITIES) similar.push(user.user_id)
+    }
+    return similar;
   }
 
   async getUserTopFiveCategories(userId: string) {
