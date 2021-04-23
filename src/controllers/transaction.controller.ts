@@ -60,7 +60,8 @@ export default class TransactionController {
 
   async getSimilarUsers(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await service.getSimilarUsersByUserId(req.params.id);
+      const {trends} = req.body;
+      const result = await service.getSimilarUsersByUserId(req.params.id, trends as string[]);
       sendResponse(res, 200, result);
     } catch (error) {
       sendError(error, next);

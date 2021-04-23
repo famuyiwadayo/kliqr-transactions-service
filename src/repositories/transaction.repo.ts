@@ -9,7 +9,8 @@ import {
   getTotalUserSpentAndIncomeValueByUserIdSql,
   getUserTxWithTheirCategoriesSql,
   getUserTxWithCategoryByUserIdSql,
-  getTopFiveCategoryFromEachMonthByUserIdSql
+  getTopFiveCategoryFromEachMonthByUserIdSql,
+  getSimilarUsersSql
 } from "../db/queries/transaction.query";
 import { query } from "../db/db";
 
@@ -74,6 +75,15 @@ export default class TransactionRepository {
 
   async getTopFiveCategoriesByUserId(userId: string): Promise<UserTopFiveCategories[]> {
     return (await query(getTopFiveCategoryFromEachMonthByUserIdSql, [userId])).rows;
+  }
+
+  async getSimilarUsers(userId: string, trends: string[]): Promise<number[]> {
+    const result = (await query(getSimilarUsersSql, [userId, trends])).rows;
+    const ids = result.reduce((acc: number[], val) => {
+      acc.push(val.user_id);
+      return acc;
+    }, [])
+    return ids
   }
 
 }

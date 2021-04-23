@@ -54,7 +54,7 @@ export default class TransactionService {
     return {...result[0] as UserTotalSpentAndIncomeRo, count: +(result[1] as string)}
   }
 
-  async getSimilarUsersByUserId(userId: string): Promise<any> {
+  async getSimilarUsersByUserId_OLD(userId: string): Promise<any> {
     const toRunInParallel: any = [this.repo.getUserTxWithTheirCategories(), this.repo.getUserTxWithCategories(userId)]
     const result = await Promise.all(toRunInParallel);
     // const result = (await this.repo.getTransactions())
@@ -76,6 +76,10 @@ export default class TransactionService {
       if(r.user_id !== +userId && intersection.length >= 3) ids.push(r.user_id)
     }
     return ids
+  }
+
+  async getSimilarUsersByUserId(userId: string, trends: string[]) {
+    return await this.repo.getSimilarUsers(userId, trends);
   }
 
   async getUserTopFiveCategories(userId: string) {
