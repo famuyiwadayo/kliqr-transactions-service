@@ -72,5 +72,5 @@ FROM (SELECT user_id, category, icon_url, count
 	ORDER BY count DESC) as b where count >= 5) c
 GROUP BY user_id)
 
-SELECT user_id FROM TRENDS WHERE categories = $2 AND user_id != $1
+SELECT * FROM TRENDS WHERE user_id != $1
 `;
