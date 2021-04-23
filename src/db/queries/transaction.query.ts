@@ -54,4 +54,23 @@ ORDER BY count DESC
 LIMIT 5) as a where count >= 7
 `;
 
-export const getTrends = ``;
+export const getSimilarUsersSql = `
+WITH TRENDS AS (SELECT user_id, array_agg(category ORDER BY category) AS categories
+FROM (SELECT user_id, category, icon_url, count 
+	FROM (
+	        SELECT DISTINCT a.user_id, a.category, a.icon_url, COUNT(category) as count 
+	        FROM (
+		        SELECT ids.user_id, category, icon_url, DATE_TRUNC('month',date_time)
+		        AS category_month, COUNT(*) AS count
+		        FROM transactions t, (SELECT DISTINCT user_id FROM transactions) as ids
+		        WHERE t.user_id =  ids.user_id
+		        AND date_time >= date_trunc('month', now()) - interval '12 month' 
+		        AND date_time < date_trunc('month', now())
+				GROUP BY category, icon_url, DATE_TRUNC('month', date_time), ids.user_id
+			) a 
+	GROUP BY a.category, a.icon_url, a.user_id
+	ORDER BY count DESC) as b where count >= 5) c
+GROUP BY user_id)
+
+SELECT user_id FROM TRENDS WHERE categories = $2 AND user_id != $1
+`;
